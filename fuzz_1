@@ -1,0 +1,37 @@
+// Array of values to fuzz
+const fuzzValues = ['<script>alert("XSS");</script>', 'admin', '123456', 'test', 'malformed!', 'etc.'];
+
+// Function to send requests with different parameter values
+function fuzzParameter() {
+  // Replace 'YOUR_URL' with the actual endpoint URL
+  const url = 'YOUR_URL';
+  // Replace 'PARAMETER_NAME' with the name of the parameter you want to fuzz
+  const parameterName = 'PARAMETER_NAME';
+
+  fuzzValues.forEach(value => {
+    // Create the request with the desired HTTP method (e.g., GET, POST, etc.)
+    const request = {
+      method: 'GET',
+      url: url,
+      body: {
+        mode: 'urlencoded',
+        urlencoded: [
+          { key: parameterName, value: value }
+        ]
+      }
+    };
+
+    // Send the request
+    pm.sendRequest(request, function (err, response) {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log(`Response for value '${value}':`, response);
+        // Add any assertions or result analysis based on the response if needed
+      }
+    });
+  });
+}
+
+// Call the fuzzParameter function to start fuzzing
+fuzzParameter();
